@@ -4,46 +4,49 @@ import pickle
 from encryption import decrypt_vote
 
 HOST = 'localhost'
-PORT = 65433
+PORT = 65434
 
 # Key generation
 p = 2**64 - 59 # Choose any prime number big enough for a string value
 g = 2 #Choose the modulo (my p)
-private_key = random.randint(2, p - 2) # Bob's private key (Kprivate)
+private_key = random.randint(2, p - 2) # Bob's private key (K_private)
 y = pow(g, private_key, p) # same as g^x mod p
 public_key = (p, g, y)
 
 votes = []
 
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-    s.bind((HOST, PORT))
-    s.listen()
-    print("Server listening...")
+print("Server is running. Waiting for votes...\n")
 
-    for i in range(6):
-        conn, addr = s.accept()
-        with conn:
-            print(f"Connected by {addr}")
+try:
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind((HOST, PORT))
+        s.listen()
+        s.settimeout(2)
 
-            # Step 1: Send public key
-            conn.sendall(pickle.dumps(public_key))
+        while True:
+            try:
+                conn, addr = s.accept()
+            except socket.timeout:
+                continue
 
-            # Step 2: Receive encrypted vote
-            data = conn.recv(1024)
+            with conn:
+                print(f"Connected by {addr}")
 
-            vote = pickle.loads(data)
-            votes.append(vote)
-            print(f"Received vote: {vote}")
+                # Step 1: Send public key
+                conn.sendall(pickle.dumps(public_key))
+
+                # Step 2: Receive encrypted vote
+                data = conn.recv(1024)
+
+                vote = pickle.loads(data)
+                votes.append(vote)
+                print(f"Received vote: {vote}")
+except KeyboardInterrupt:
+    print("\nVoting ended by user.")
 
 
-print("The voting is finished.\nCounting the votes...")
-counters = {
-    "simon": 0,
-    "eden": 0,
-    "guy": 0,
-    "shira": 0,
-    "yaheli": 0
-}
+print("\nCounting the votes...")
+counters = {name: 0 for name in ["simon", "eden", "guy", "shira", "yaheli"]}
 
 for vote in votes:
     decrypted_vote, Key_E = decrypt_vote(vote[0], vote[1], private_key, p)
@@ -51,9 +54,6 @@ for vote in votes:
     if decrypted_vote in counters:
         counters[decrypted_vote] += 1
 
+for name, count in counters.items():
+    print(f"{name.capitalize()} votes: {count}")
 
-print(f"Simon votes: {counters['simon']}")
-print(f"Eden votes: {counters['eden']}")
-print(f"Guy votes: {counters['guy']}")
-print(f"Shira votes: {counters['shira']}")
-print(f"Yaheli votes: {counters['yaheli']}")
