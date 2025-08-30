@@ -7,7 +7,7 @@ HOST = 'localhost'
 PORT = 65433
 
 # Key generation
-p = 467 # Choose any prime number
+p = 2**64 - 59 # Choose any prime number big enough for a string value
 g = 2 #Choose the modulo (my p)
 private_key = random.randint(2, p - 2) # Bob's private key (Kprivate)
 y = pow(g, private_key, p) # same as g^x mod p
@@ -20,7 +20,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.listen()
     print("Server listening...")
 
-    for i in range(5):
+    for i in range(6):
         conn, addr = s.accept()
         with conn:
             print(f"Connected by {addr}")
@@ -37,17 +37,23 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 
 
 print("The voting is finished.\nCounting the votes...")
-counter_1 = 0
-counter_2 = 0
+counters = {
+    "simon": 0,
+    "eden": 0,
+    "guy": 0,
+    "shira": 0,
+    "yaheli": 0
+}
 
 for vote in votes:
     decrypted_vote, Key_E = decrypt_vote(vote[0], vote[1], private_key, p)
-    print(f"Decrypted vote: {decrypted_vote}")
 
-    if decrypted_vote == 1:
-        counter_1 += 1
-    elif decrypted_vote == 2:
-        counter_2 += 1
+    if decrypted_vote in counters:
+        counters[decrypted_vote] += 1
 
-print(f"Yes votes (1): {counter_1}")
-print(f"No votes (2): {counter_2}")
+
+print(f"Simon votes: {counters['simon']}")
+print(f"Eden votes: {counters['eden']}")
+print(f"Guy votes: {counters['guy']}")
+print(f"Shira votes: {counters['shira']}")
+print(f"Yaheli votes: {counters['yaheli']}")

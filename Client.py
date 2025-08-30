@@ -15,9 +15,9 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 
     # Step 2: Cast vote
     # Step 2: Cast vote
-    vote = int(input("Cast your vote (1 = Yes, 2 = No): "))
-    if vote not in [1, 2]:
-        raise ValueError("Invalid vote. Must be 1 or 2.")
+    vote = input("Cast your vote (Simon, Eden, Guy, Shira, Yaheli): ").lower()
+    if vote not in ["simon", "eden", "guy", "shira", "yaheli"]:
+        raise ValueError("Invalid vote. Must be Simon/Eden/Guy/Shira/Yaheli.")
 
     encrypted_vote, Key_E = encrypt_vote(vote, p, g, y)
 
