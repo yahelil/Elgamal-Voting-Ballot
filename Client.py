@@ -14,7 +14,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     print(f"Received public key: p={p}, g={g}, y={y}")
 
     # Step 2: Cast vote
-    # Step 2: Cast vote
     vote = input("Cast your vote (Simon, Eden, Guy, Shira, Yaheli): ").lower()
     if vote not in ["simon", "eden", "guy", "shira", "yaheli"]:
         raise ValueError("Invalid vote. Must be Simon/Eden/Guy/Shira/Yaheli.")
