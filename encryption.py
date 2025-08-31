@@ -7,11 +7,11 @@ def int_to_string(n):
     byte_length = (n.bit_length() + 7) // 8
     return n.to_bytes(byte_length, 'big').decode()
 
-def encrypt_vote(name, p, g, y):
+def encrypt_vote(name, p, g, b):
     m = string_to_int(name)
     i = random.randint(2, p - 2)
     Key_E = pow(g, i, p)
-    K_M = pow(y, i, p)
+    K_M = pow(b, i, p)
     encrypted_vote = (m * K_M) % p
     return encrypted_vote, Key_E
 
