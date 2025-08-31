@@ -8,7 +8,7 @@ PORT = 65434
 
 # Key generation
 p = 2**64 - 59 # Choose any prime number big enough for a string value
-g = 4
+g = 60
 private_key = random.randint(2, p - 2) # Bob's private key (K_private)
 b = pow(g, private_key, p) # same as g^x mod p
 public_key = (p, g, b)

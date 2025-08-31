@@ -3,7 +3,7 @@ import pickle
 from GUI import launch_gui
 
 HOST = 'localhost'
-PORT = 65434
+PORT = 65433
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.connect((HOST, PORT))
