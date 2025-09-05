@@ -19,25 +19,22 @@ def launch_gui(sock, p, g, b):
 
     canvas = tk.Canvas(root, width=300, height=200, bg="white")
     canvas.pack(pady=10)
-    box = canvas.create_rectangle(100, 150, 200, 180, fill="#444", outline="black")
+    canvas.create_rectangle(100, 150, 200, 180, fill="#444", outline="black")
     ballot = canvas.create_rectangle(120, 20, 180, 50, fill="#ddd", outline="black")
     canvas.itemconfigure(ballot, state='hidden')
 
     def animate_ballot(vote):
         canvas.itemconfigure(ballot, state='normal')
-        stamp = canvas.create_oval(140, 30, 160, 50, fill="red", outline="")
         stamp_text = canvas.create_text(150, 40, text=vote, fill="white", font=("Helvetica", 10, "bold"))
         root.update()
         root.after(200)
         for scale in [1.2, 1.4, 1.2, 1.0]:
-            canvas.scale(stamp, 150, 40, scale, scale)
             canvas.scale(stamp_text, 150, 40, scale, scale)
             root.update()
             root.after(100)
-        for _ in range(20):
-            canvas.move(ballot, 0, 5)
-            canvas.move(stamp, 0, 5)
-            canvas.move(stamp_text, 0, 5)
+        for _ in range(10):
+            canvas.move(ballot, 0, 10)
+            canvas.move(stamp_text, 0, 10)
             root.update()
             root.after(50)
         messagebox.showinfo("Vote Submitted", f"You voted for {vote_var.get()}.")
