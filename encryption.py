@@ -1,23 +1,38 @@
 import random
 
+
 def string_to_int(s):
-    return int.from_bytes(s.encode(), 'big')
+    match s:
+        case "simon": return 0
+        case "eden": return 1
+        case "guy": return 2
+        case "shira": return 3
+        case "yaheli": return 4
+    return None
+
+    #return int.from_bytes(s.encode(), 'big')
 
 def int_to_string(n):
-    byte_length = (n.bit_length() + 7) // 8
-    return n.to_bytes(byte_length, 'big').decode()
+    #byte_length = (n.bit_length() + 7) // 8
+    #return n.to_bytes(byte_length, 'big').decode()
+    match n:
+        case 0:
+            return "simon"
+        case 1:
+            return "eden"
+        case 2:
+            return "guy"
+        case 3:
+            return "shira"
+        case 4:
+            return "yaheli"
+    return None
 
-def encrypt_vote(name, p, g, b):
+def encrypt_vote(name, Group, public_key):
+    r = random.randint(1, 100)
     m = string_to_int(name)
-    i = random.randint(2, p - 2)
-    Key_E = pow(g, i, p)
-    K_M = pow(b, i, p)
-    encrypted_vote = (m * K_M) % p
-    return encrypted_vote, Key_E
+    return Group.pow(Group.get_generator(), r), Group.operation(Group.pow(public_key,r), m)
 
-def decrypt_vote(encrypted_vote, key, private_key, p):
-    K_M = pow(key, private_key, p)
-    K_M_inv = pow(K_M, -1, p)
-    decrypted_int = (encrypted_vote * K_M_inv) % p
-    decrypted_name = int_to_string(decrypted_int)
-    return decrypted_name, key
+def decrypt_vote(Group, num, encrypted_vote, private_key):
+    inverse = Group.inverse(Group.pow(num, private_key))
+    return int_to_string(Group.operation(inverse, encrypted_vote))

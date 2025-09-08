@@ -2,17 +2,26 @@ import socket
 import random
 import pickle
 from encryption import decrypt_vote
-from mixnet import mix_two_ciphertexts, verify_mix_proof
+from Group import Group
+from mixnet import reencrypt
 
 HOST = 'localhost'
 PORT = 65434
 
+#Creating the cyclic group
+def add_mod_5(a, b):
+    return (a + b) % 5
+
+elements = [0, 1, 2, 3, 4]
+G = Group(elements, add_mod_5)
+G.show_structure()
+
 # Key generation
-p = 2**64 - 59 # Choose any prime number big enough for a string value
-g = 60
-private_key = random.randint(2, p - 2) # Bob's private key (K_private)
-b = pow(g, private_key, p) # same as g^x mod p
-public_key = (p, g, b)
+g = G.get_generator()
+private_key = random.randint(1, 100)
+print(f"Private key: {private_key}")
+public_key = G.pow(g, private_key)
+print(f"Public key: {public_key}")
 
 votes = []
 
@@ -34,7 +43,7 @@ try:
                 print(f"Connected by {addr}")
 
                 # Step 1: Send public key
-                conn.sendall(pickle.dumps(public_key))
+                conn.sendall(pickle.dumps((elements, public_key)))
 
                 # Step 2: Receive encrypted vote
                 data = conn.recv(1024)
@@ -50,11 +59,15 @@ print("\nCounting the votes...")
 counters = {name: 0 for name in ["simon", "eden", "guy", "shira", "yaheli"]}
 
 for vote in votes:
-    decrypted_vote, Key_E = decrypt_vote(vote[0], vote[1], private_key, p)
-
+    num, encrypted_vote = vote[0], vote[1]
+    decrypted_vote = decrypt_vote(G, num, encrypted_vote, private_key)
+    print(decrypted_vote)
     if decrypted_vote in counters:
         counters[decrypted_vote] += 1
 
 for name, count in counters.items():
     print(f"{name.capitalize()} votes: {count}")
 
+print("\nReencrypting votes...")
+
+reencrypt(Group, votes[0])
