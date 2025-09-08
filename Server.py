@@ -46,21 +46,6 @@ except KeyboardInterrupt:
     print("\nVoting ended by user.")
 
 
-print("\nMixing votes...")
-if len(votes) >= 2:
-    C1, C2 = votes[0], votes[1]
-    C1_prime, C2_prime, proof = mix_two_ciphertexts(C1, C2, p, g, b)
-
-    if verify_mix_proof(proof, p, g, b):
-        print("Mix verified successfully.")
-        mixed_votes = [C1_prime, C2_prime]
-    else:
-        print("Mix verification failed.")
-        mixed_votes = [C1, C2]
-else:
-    mixed_votes = votes
-
-
 print("\nCounting the votes...")
 counters = {name: 0 for name in ["simon", "eden", "guy", "shira", "yaheli"]}
 
