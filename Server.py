@@ -3,7 +3,7 @@ import random
 import pickle
 from encryption import decrypt_vote
 from Group import Group
-from mixnet import reencrypt
+from mixnet import mix_two_ciphertexts
 
 HOST = 'localhost'
 PORT = 65434
@@ -13,15 +13,13 @@ def add_mod_5(a, b):
     return (a + b) % 5
 
 elements = [0, 1, 2, 3, 4]
-G = Group(elements, add_mod_5)
-G.show_structure()
+Group = Group(elements, add_mod_5)
+Group.show_structure()
 
 # Key generation
-g = G.get_generator()
+g = Group.get_generator()
 private_key = random.randint(1, 100)
-print(f"Private key: {private_key}")
-public_key = G.pow(g, private_key)
-print(f"Public key: {public_key}")
+public_key = Group.pow(g, private_key)
 
 votes = []
 
@@ -50,17 +48,20 @@ try:
 
                 vote = pickle.loads(data)
                 votes.append(vote)
-                print(f"Received vote: {vote}")
 except KeyboardInterrupt:
     print("\nVoting ended by user.")
 
+print("\nMixing votes...")
+
+reencrypted1, reencrypted2 = mix_two_ciphertexts(Group, public_key, votes[0], votes[1])
+mix_two_ciphertexts(Group, public_key, reencrypted1, reencrypted2)
 
 print("\nCounting the votes...")
 counters = {name: 0 for name in ["simon", "eden", "guy", "shira", "yaheli"]}
 
 for vote in votes:
     num, encrypted_vote = vote[0], vote[1]
-    decrypted_vote = decrypt_vote(G, num, encrypted_vote, private_key)
+    decrypted_vote = decrypt_vote(Group, num, encrypted_vote, private_key)
     print(decrypted_vote)
     if decrypted_vote in counters:
         counters[decrypted_vote] += 1
@@ -68,6 +69,3 @@ for vote in votes:
 for name, count in counters.items():
     print(f"{name.capitalize()} votes: {count}")
 
-print("\nReencrypting votes...")
-
-reencrypt(Group, votes[0])
