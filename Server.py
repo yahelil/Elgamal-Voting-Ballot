@@ -7,6 +7,7 @@ from mixnet import mix_two_ciphertexts
 
 HOST = 'localhost'
 PORT = 65434
+MAX_VOTES = 2
 
 #Creating the cyclic group
 def add_mod_5(a, b):
@@ -31,7 +32,7 @@ try:
         s.listen()
         s.settimeout(2)
 
-        while True:
+        while len(votes) < MAX_VOTES:
             try:
                 conn, addr = s.accept()
             except socket.timeout:
@@ -54,7 +55,8 @@ except KeyboardInterrupt:
 print("\nMixing votes...")
 
 reencrypted1, reencrypted2 = mix_two_ciphertexts(Group, public_key, votes[0], votes[1])
-mix_two_ciphertexts(Group, public_key, reencrypted1, reencrypted2)
+votes[0] = reencrypted1
+votes[1] = reencrypted2
 
 print("\nCounting the votes...")
 counters = {name: 0 for name in ["simon", "eden", "guy", "shira", "yaheli"]}
