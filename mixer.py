@@ -1,0 +1,56 @@
+import hashlib
+import random
+import socket
+import pickle
+from Group import Group
+
+HOST = 'localhost'
+PORT = 65434
+
+def add_mod_5(a, b):
+    return (a + b) % 5
+
+def reencrypt(encrypted_vote, r):
+    g = Group.get_generator()
+    pow_public_key = Group.pow(public_key, r)
+    return Group.operation(Group.pow(g, r), encrypted_vote[0]), Group.operation(pow_public_key, encrypted_vote[1]) # (g^(r'+r), pk^r' * m)
+
+def mix_two_ciphertexts(C1, C2):
+    r = random.randint(1, 100)
+    D1 = reencrypt(C1, r)
+    D2 = reencrypt(C2, r)
+    pie = generate_proof((C1, C2), (D1, D2), r)
+    if random.choice([True, False]):
+        return D1, D2, pie
+    else:
+        return D2, D1, pie
+
+def hash_challenge(*args):
+    data = b''.join(str(arg).encode() for arg in args)
+    return int(hashlib.sha256(data).hexdigest(), 16)
+
+def generate_proof(original, reencryption, r):
+    a1 = Group.get_generator()
+    a2 = public_key
+    b1 = Group.operation(reencryption[0][0], Group.inverse(original[0][0]))  # g^r
+    b2 = Group.operation(reencryption[0][1], Group.inverse(original[0][1]))  # pk^r
+
+    s = random.randint(1, Group.order - 1)
+    A1 = Group.pow(a1, s)
+    A2 = Group.pow(a2, s)
+
+    c = hash_challenge(a1, a2, b1, b2, A1, A2) % Group.order
+    t = (s + c * r) % Group.order
+
+    return A1, A2, c, t
+
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+    s.connect((HOST, PORT))
+
+    data = s.recv(4096)
+    public_key, mixes, elements = pickle.loads(data)
+    Group = Group(elements, add_mod_5)
+
+    mixed_votes = mix_two_ciphertexts(mixes[-1][0], mixes[-1][1])
+    s.sendall(pickle.dumps(("mixer", mixed_votes)))
+
