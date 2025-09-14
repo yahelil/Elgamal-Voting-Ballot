@@ -31,9 +31,13 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     Group = Group(elements, add_mod_5)
 
     verified = True
-    for i in range(1, len(mixes)):
-        verified = verify_proof((mixes[i-1][0], mixes[i-1][1]), (mixes[i][0], mixes[i][1]), mixes[i][2])
+    for i in range(2, len(mixes)):
+        prev_cipher1, prev_cipher2, _ = mixes[i - 1][1]
+        curr_cipher1, curr_cipher2, proof = mixes[i][1]
+
+        verified = verify_proof((prev_cipher1, prev_cipher2), (curr_cipher1, curr_cipher2), proof)
         if not verified:
-            print(f"The mixer {i} cheated")
+            print(f"The mixer {i - 1} cheated")
             break
+    print(f"Mixers verified")
     s.sendall(pickle.dumps(("very", verified)))
