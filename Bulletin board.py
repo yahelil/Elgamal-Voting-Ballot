@@ -41,8 +41,8 @@ try:
                 votes.append(vote)
         mixes.append((votes[0], votes[1]))
         print("Finished voting...")
-        num_of_mixes = int(input("How many mixers do you have? "))
-        while len(mixes) < num_of_mixes + 1:
+        #num_of_mixes = int(input("How many mixers do you have? "))
+        while len(mixes) < MAX_VOTES + 1:
             try:
                 conn, addr = s.accept()
             except socket.timeout:
@@ -51,13 +51,16 @@ try:
                 print(f"Connected by {addr}")
 
                 # Step 1: Send public key
+                print(mixes)
                 conn.sendall(pickle.dumps((public_key, mixes, elements)))
 
                 # Step 2: Receive encrypted vote
                 data = conn.recv(4096)
                 mixed_votes = pickle.loads(data) # the two votes mixed and the proof
                 if mixed_votes[0] == "mixer":
+                    print(mixed_votes[1])
                     mixes.append(mixed_votes[1])
+                    print(mixes)
         votes = [mixes[-1][0], mixes[-1][1]]
         admin_conn.sendall(pickle.dumps(votes))
 except KeyboardInterrupt:

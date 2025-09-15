@@ -19,11 +19,11 @@ def mix_two_ciphertexts(C1, C2):
     r = random.randint(1, 100)
     D1 = reencrypt(C1, r)
     D2 = reencrypt(C2, r)
-    pie = generate_proof((C1, C2), (D1, D2), r)
+    pi = generate_proof((C1, C2), (D1, D2), r)
     if random.choice([True, False]):
-        return D1, D2, pie
+        return D1, D2, pi
     else:
-        return D2, D1, pie
+        return D2, D1, pi
 
 def hash_challenge(*args):
     hasher = b''.join(str(arg).encode() for arg in args)

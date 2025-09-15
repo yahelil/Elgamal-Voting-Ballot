@@ -28,12 +28,16 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 
     data = s.recv(4096)
     public_key, mixes, elements = pickle.loads(data)
+    print(f"mixes: {mixes}")
     Group = Group(elements, add_mod_5)
 
     verified = True
-    for i in range(2, len(mixes)):
-        prev_cipher1, prev_cipher2, _ = mixes[i - 1][1]
-        curr_cipher1, curr_cipher2, proof = mixes[i][1]
+    for i in range(1, len(mixes)):
+        if i == 1:
+            prev_cipher1, prev_cipher2 = mixes[i - 1]
+        else:
+            prev_cipher1, prev_cipher2, _ = mixes[i - 1]
+        curr_cipher1, curr_cipher2, proof = mixes[i]
 
         verified = verify_proof((prev_cipher1, prev_cipher2), (curr_cipher1, curr_cipher2))
         if not verified:
