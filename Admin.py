@@ -22,7 +22,7 @@ public_key = Group.pow(g, private_key)
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.connect((HOST, PORT))
 
-    s.sendall(pickle.dumps((elements, public_key)))
+    s.sendall(pickle.dumps((public_key, elements)))
 
     votes = pickle.loads(s.recv(4096))
 

@@ -26,8 +26,8 @@ def mix_two_ciphertexts(C1, C2):
         return D2, D1, pie
 
 def hash_challenge(*args):
-    data = b''.join(str(arg).encode() for arg in args)
-    return int(hashlib.sha256(data).hexdigest(), 16)
+    hasher = b''.join(str(arg).encode() for arg in args)
+    return int(hashlib.sha256(hasher).hexdigest(), 16)
 
 def generate_proof(original, reencryption, r):
     a1 = Group.get_generator()
@@ -35,7 +35,7 @@ def generate_proof(original, reencryption, r):
     b1 = Group.operation(reencryption[0][0], Group.inverse(original[0][0]))  # g^r
     b2 = Group.operation(reencryption[0][1], Group.inverse(original[0][1]))  # pk^r
 
-    s = random.randint(1, Group.order - 1)
+    s = random.randint(1, 1000)
     A1 = Group.pow(a1, s)
     A2 = Group.pow(a2, s)
 

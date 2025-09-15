@@ -8,7 +8,7 @@ PORT = 65434
 def add_mod_5(a, b):
     return (a + b) % 5
 
-def verify_proof(original, reencryption, proof):
+def verify_proof(original, reencryption):
     A1, A2, c, t = proof
     g = Group.get_generator()
 
@@ -35,9 +35,9 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         prev_cipher1, prev_cipher2, _ = mixes[i - 1][1]
         curr_cipher1, curr_cipher2, proof = mixes[i][1]
 
-        verified = verify_proof((prev_cipher1, prev_cipher2), (curr_cipher1, curr_cipher2), proof)
+        verified = verify_proof((prev_cipher1, prev_cipher2), (curr_cipher1, curr_cipher2))
         if not verified:
             print(f"The mixer {i - 1} cheated")
             break
-    print(f"Mixers verified")
+    print(f"Mixers verified: {verified}")
     s.sendall(pickle.dumps(("very", verified)))

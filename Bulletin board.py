@@ -18,7 +18,7 @@ try:
 
         admin_conn, admin_addr = s.accept()
         data = admin_conn.recv(4096)
-        elements, public_key = pickle.loads(data)
+        public_key, elements = pickle.loads(data)
 
         print("Admin is connected, public key was received...\n")
 
@@ -41,7 +41,8 @@ try:
                 votes.append(vote)
         mixes.append((votes[0], votes[1]))
         print("Finished voting...")
-        while len(mixes) < MAX_VOTES+1:
+        num_of_mixes = int(input("How many mixers do you have? "))
+        while len(mixes) < num_of_mixes + 1:
             try:
                 conn, addr = s.accept()
             except socket.timeout:
@@ -57,6 +58,7 @@ try:
                 mixed_votes = pickle.loads(data) # the two votes mixed and the proof
                 if mixed_votes[0] == "mixer":
                     mixes.append(mixed_votes[1])
+        votes = [mixes[-1][0], mixes[-1][1]]
         admin_conn.sendall(pickle.dumps(votes))
 except KeyboardInterrupt:
     print("\nVoting ended by user.")
