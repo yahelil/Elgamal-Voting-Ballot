@@ -21,6 +21,14 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     # Step 2: Cast vote
     # Step 2: Cast vote
     vote = input("Cast your vote (Simon, Eden, Guy, Shira, Yaheli): ").lower()
+
+    match vote:
+        case "si": vote = "simon"
+        case "e": vote = "eden"
+        case "g": vote = "guy"
+        case "sh": vote = "shira"
+        case "y": vote = "yaheli"
+
     if vote not in ["simon", "eden", "guy", "shira", "yaheli"]:
         raise ValueError("Invalid vote. Must be Simon/Eden/Guy/Shira/Yaheli.")
 
