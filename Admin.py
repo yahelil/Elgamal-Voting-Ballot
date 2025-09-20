@@ -24,6 +24,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 
     s.sendall(pickle.dumps((public_key, elements)))
 
+    print("keys send")
+
     votes = pickle.loads(s.recv(4096))
 
 

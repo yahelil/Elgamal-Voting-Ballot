@@ -16,16 +16,11 @@ def int_to_string(n):
     #byte_length = (n.bit_length() + 7) // 8
     #return n.to_bytes(byte_length, 'big').decode()
     match n:
-        case 0:
-            return "simon"
-        case 1:
-            return "eden"
-        case 2:
-            return "guy"
-        case 3:
-            return "shira"
-        case 4:
-            return "yaheli"
+        case 0: return "simon"
+        case 1: return "eden"
+        case 2: return "guy"
+        case 3: return "shira"
+        case 4: return "yaheli"
     return None
 
 def encrypt_vote(name, Group, public_key):

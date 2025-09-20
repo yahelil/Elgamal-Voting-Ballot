@@ -29,20 +29,20 @@ def hash_challenge(*args):
     hasher = b''.join(str(arg).encode() for arg in args)
     return int(hashlib.sha256(hasher).hexdigest(), 16)
 
-def generate_proof(original, reencryption, r):
-    a1 = Group.get_generator()
-    a2 = public_key
+def generate_proof(original, reencryption, v):
+    g = Group.get_generator()
+    y = public_key
     b1 = Group.operation(reencryption[0][0], Group.inverse(original[0][0]))  # g^r
     b2 = Group.operation(reencryption[0][1], Group.inverse(original[0][1]))  # pk^r
 
-    s = random.randint(1, 1000)
-    A1 = Group.pow(a1, s)
-    A2 = Group.pow(a2, s)
+    s = random.randint(1, Group.order - 1)
+    A1 = Group.pow(g, s)
+    A2 = Group.pow(y, s)
 
-    c = hash_challenge(a1, a2, b1, b2, A1, A2) % Group.order
-    t = (s + c * r) % Group.order
+    c = hash_challenge(g, y, b1, b2, A1, A2) % Group.order
+    r = (s + c * v) % Group.order
 
-    return A1, A2, c, t
+    return A1, A2, c, r
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.connect((HOST, PORT))
