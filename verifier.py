@@ -11,6 +11,7 @@ def add_mod_5(a, b):
 
 
 def check_equality(original, reencryption):
+    """Perform a proof verification based on the given proof and parameters."""
     A1, A2, c, r = proof
     g = Group.get_generator()
 
@@ -19,12 +20,10 @@ def check_equality(original, reencryption):
 
     return Group.pow(g, r) == Group.operation(A1, Group.pow(b1, c)) and Group.pow(public_key, r) == Group.operation(A2, Group.pow(b2, c))
 
-
-
-"""The function takes the two votes before the mix and after together with the proof
-        Then Returns True or False based on whether the proof is correct"""
-
 def verify_proof(original, reencryption):
+    """The function takes the two votes before the mix and after together with the proof
+            Then Returns True or False based on whether the proof is correct"""
+    # Checks if [(C1 ≈ C'1) ∨ (C1 ≈ C'2)]
     return check_equality(original[0], reencryption[0]) or check_equality(original[1], reencryption[0])
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -35,6 +34,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     print(f"mixes: {mixes}")
     Group = Group(elements, add_mod_5)
 
+    # Check the validity of mixes and detect any cheating in the process.
     overall_proof = True
     cheater = None
     for i in range(1, len(mixes)):
@@ -46,6 +46,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 
         verified = verify_proof((prev_cipher1, prev_cipher2), (curr_cipher1, curr_cipher2))
         if not verified:
+            # if the current mixer cheated
             print(f"The mixer {i} cheated")
             if not cheater: cheater = i
             overall_proof = False

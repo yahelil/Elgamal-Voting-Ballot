@@ -29,6 +29,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     votes = pickle.loads(s.recv(4096))
 
 
+# Count the votes
 print("\nCounting the votes...")
 counters = {name: 0 for name in ["simon", "eden", "guy", "shira", "yaheli"]}
 
