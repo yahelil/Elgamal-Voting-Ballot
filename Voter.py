@@ -21,6 +21,17 @@ def name_shortcut(name):
 
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+    """
+        Establish a socket connection to a server.
+        Receive public_key, elements. 
+        Unpack the received data using pickle. 
+        Create a group with the elements.
+        Prompt the user to cast a vote. 
+        Map the user input to the full names of the candidates. 
+        Encrypt the vote using the group and public key.
+        Send the encrypted vote to the server.
+    """
+
     s.connect((HOST, PORT))
 
     # Receive public key

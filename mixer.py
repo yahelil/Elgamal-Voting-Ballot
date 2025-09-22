@@ -13,6 +13,12 @@ def add_mod_5(a, b):
     return (a + b) % 5
 
 def reencrypt(encrypted_vote, r):
+    """
+        Mix two ciphertexts using a random value.
+        Generate proofs.
+        Return the mixed ciphertexts along with the proof.
+    """
+
     # Adding an option to cheat (Only to test verifier. Not in real life!)
     if input("Cheat? (y or n)") == "y":
         vote = input("Vote: ").lower()
@@ -35,11 +41,16 @@ def mix_two_ciphertexts(C1, C2):
         return D2, D1, pi
 
 def hash_challenge(*args):
-    # A simple sha256 hash
+    """A simple sha256 hash"""
+
     hasher = b''.join(str(arg).encode() for arg in args)
     return int(hashlib.sha256(hasher).hexdigest(), 16)
 
 def generate_proof(original, reencryption, v):
+    """
+        Generate a zero-knowledge proof of knowledge for a re-encryption operation.
+    """
+
     g = Group.get_generator()
     y = public_key
     b1 = Group.operation(reencryption[0][0], Group.inverse(original[0][0]))  # g^r
@@ -55,6 +66,12 @@ def generate_proof(original, reencryption, v):
     return A1, A2, c, r
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+    """
+        Establish a socket connection to a server. 
+        Receive public_key, mixes, elements.
+        Send processed data back.
+    """
+
     sock.connect((HOST, PORT))
 
     data = sock.recv(4096)

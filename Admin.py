@@ -20,11 +20,17 @@ private_key = random.randint(1, 100)
 public_key = Group.pow(g, private_key)
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+    """
+        Establish a socket connection to a server.
+        Send a pickled tuple containing a public key and elements.
+        Receive pickled votes from the server.
+    """
+
     s.connect((HOST, PORT))
 
     s.sendall(pickle.dumps((public_key, elements)))
 
-    print("keys send")
+    print("keys sent")
 
     votes = pickle.loads(s.recv(4096))
 
