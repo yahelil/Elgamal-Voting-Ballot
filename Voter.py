@@ -1,8 +1,7 @@
 import socket
 import pickle
-from encryption import encrypt_vote
+from Encryption import encrypt_vote
 from Group import Group
-
 
 HOST = 'localhost'
 PORT = 65434
@@ -40,8 +39,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     group = Group(elements, add_mod_5) # creates the group
 
     # accepts a vote
-    vote = input("Cast your vote (Simon, Eden, Guy, Shira, Yaheli): ").lower()
-    name_shortcut(vote)
+    vote = name_shortcut(input("Cast your vote (Simon, Eden, Guy, Shira, Yaheli): ").lower())
+
     while vote not in ["simon", "eden", "guy", "shira", "yaheli"]:
         print("Invalid vote. Must be Simon/Eden/Guy/Shira/Yaheli.")
         vote = input("Cast your vote (Simon, Eden, Guy, Shira, Yaheli): ").lower()

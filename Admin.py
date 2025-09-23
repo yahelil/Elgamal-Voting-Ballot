@@ -2,7 +2,7 @@ import socket
 import pickle
 from Group import Group
 import random
-from encryption import decrypt_vote
+from Encryption import decrypt_vote
 
 HOST = 'localhost'
 PORT = 65434
@@ -46,5 +46,13 @@ for vote in votes:
     if decrypted_vote in counters:
         counters[decrypted_vote] += 1
 
+max_count = 0
+winner = None
 for name, count in counters.items():
+    if count > max_count:
+        winner = name
+        max_count = count
+    elif count == max_count:
+        winner = winner + ", " + name
     print(f"{name.capitalize()} votes: {count}")
+print(f"Winners are {winner}")

@@ -15,7 +15,7 @@ try:
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind((HOST, PORT))
         s.listen()
-        s.settimeout(10)
+        s.settimeout(30)
 
         # Connecting to Admin
         admin_conn, admin_addr = s.accept()
@@ -52,8 +52,6 @@ try:
             except socket.timeout:
                 continue
             with conn:
-                print(f"Connected by {addr}")
-
                 # Send public key and the current mixes
                 conn.sendall(pickle.dumps((public_key, mixes, elements)))
 
@@ -61,20 +59,23 @@ try:
                 data = conn.recv(4096)
                 response = pickle.loads(data) # the two votes mixed and the proof
 
-                if response[0] == "mixer": # if a mixer connected appends the re-encrypted votes (with the proof)
+                if response[0] == "mixer": # if mixer connected appends the re-encrypted votes (with the proof)
+                    print(f"Mixer {len(mixes)} connected")
                     mixes.append(response[1])
 
-                if response[0] == "very" and not response[1]: # if a verifier and at least one mixer cheated
-                    print("Beware a mixer cheated!!!")
-                    # An option to remove all faulty re-encrypted votes from mixes
-                    if input("Want to overrule him? (y for yes, n for no)") == "y":
-                        tmp = []
-                        for i in range(response[2]):
-                            tmp.append(mixes[i])
-                        mixes = tmp
+                if response[0] == "very" and not response[1]: # if verifier
+                    print(f"Verifier connected")
+                    if not response[1]: # At least one mixer cheated
+                        print("Beware a mixer cheated!!!")
+                        # An option to remove all faulty re-encrypted votes from mixes
+                        if input("Want to overrule him? (y for yes, n for no)") == "y":
+                            tmp = []
+                            for i in range(response[2]):
+                                tmp.append(mixes[i])
+                            mixes = tmp
 
             # if MAX_MIXES reached ask whether to verify more or not
-            if len(mixes) >= MAX_MIXES:
+            if len(mixes) >= MAX_MIXES + 1:
                 if input("Voting finished. Want to verify one last time? (y for yes, n for no)") == "n":
                     # if not stop and send results to Admin
                     # else continues to accept another verifier

@@ -39,8 +39,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 
     data = s.recv(4096)
     public_key, mixes, elements = pickle.loads(data)
-    print(f"mixes: {mixes}")
     Group = Group(elements, add_mod_5)
+    print(f"Verifying {len(mixes)} mixers...\n")
 
     # Check the validity of mixes and detect any cheating in the process.
     overall_proof = True
@@ -55,7 +55,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         verified = verify_proof((prev_cipher1, prev_cipher2), (curr_cipher1, curr_cipher2))
         if not verified:
             # if the current mixer cheated
-            print(f"The mixer {i} cheated")
+            print(f"Mixer {i} cheated")
             if not cheater: cheater = i
             overall_proof = False
     print(f"Mixers verified: {overall_proof}")

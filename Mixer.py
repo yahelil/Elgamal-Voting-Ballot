@@ -2,15 +2,25 @@ import hashlib
 import random
 import socket
 import pickle
+
+from BulletinBoard import MAX_MIXES
 from Group import Group
-from Voter import name_shortcut
-from encryption import encrypt_vote
+from Encryption import encrypt_vote
 
 HOST = 'localhost'
 PORT = 65434
 
 def add_mod_5(a, b):
     return (a + b) % 5
+
+def name_shortcut(name):
+    match name:
+        case "si":  return "simon"
+        case "e":   return "eden"
+        case "g":   return "guy"
+        case "sh":  return "shira"
+        case "y":   return "yaheli"
+    return name
 
 def reencrypt(encrypted_vote, r):
     """
@@ -19,11 +29,14 @@ def reencrypt(encrypted_vote, r):
         Return the mixed ciphertexts along with the proof.
     """
 
+    if not hasattr(reencrypt, "cheat"):
+        reencrypt.cheat = input("Cheat? (y or n) ")
+
     # Adding an option to cheat (Only to test verifier. Not in real life!)
-    if input("Cheat? (y or n)") == "y":
-        vote = input("Vote: ").lower()
-        name_shortcut(vote)
+    if reencrypt.cheat == "y":
+        vote = name_shortcut(input("Vote: ").lower())
         encrypted_vote = encrypt_vote(vote, Group, public_key)
+
     # Then re-encrypt
     g = Group.get_generator()
     pow_public_key = Group.pow(public_key, r)
@@ -34,6 +47,7 @@ def mix_two_ciphertexts(C1, C2):
     D1 = reencrypt(C1, r)
     D2 = reencrypt(C2, r)
     pi = generate_proof((C1, C2), (D1, D2), r)
+
     # After re-encrypting every vote randomly choose whether mix or not
     if random.choice([True, False]):
         return D1, D2, pi
@@ -77,7 +91,12 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
     data = sock.recv(4096)
     public_key, mixes, elements = pickle.loads(data)
     Group = Group(elements, add_mod_5)
+    print(f"Mixer {len(mixes)}")
 
     mixed_votes = mix_two_ciphertexts(mixes[-1][0], mixes[-1][1])
+    if len(mixes) == MAX_MIXES:
+        print("No more mixes.")
+    else:
+        print("Done mixing.")
     sock.sendall(pickle.dumps(("mixer", mixed_votes)))
 
