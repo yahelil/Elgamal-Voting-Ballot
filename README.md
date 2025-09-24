@@ -1,31 +1,30 @@
 # Elgamal-Voting-Ballot
 
-https://github.com/user-attachments/assets/77ba4e23-2581-4c6e-83c9-3b13a2cf81cf
+
 
 <!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li><a href="#overview">Overview</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="#project-structure">Project Structure</a></li>
-    <li>
-      <details>
-        <summary><a href="#how-to-run-the-project">How to Run the Project</a></summary>
-        <ul>
-            <li><a href="#start-the-bulletin-board">Start the Bulletin Board</a></li>
-            <li><a href="#launch-the-admin">Launch the Admin</a></li>
-            <li><a href="#cast-votes">Cast Votes</a></li>
-            <li><a href="#run-a-mixer">Run a Mixer</a></li>
-            <li><a href="#run-a-verifier-optional-between-mixers">Run a Verifier</a></li>
-            <li><a href="#final-verification-optional">Final Verification</a></li>
-            <li><a href="#view-the-final-ballot">View the Final Ballot</a></li>
-        </ul>
-      </details>
-    </li>
-    <li><a href="#the-project-in-real-life ">The Project in Real Life </a></li>
-  </ol>
-</details>
+## Table Of Contents
+<ol>
+  <li><a href="#overview">Overview</a></li>
+  <li><a href="#about">About</a></li>
+  <li><a href="#project-structure">Project Structure</a></li>
+  <li><a href="#an-example-for-a-run">An example for a run</a></li>
+  <li>
+    <details>
+      <summary><a href="#how-to-run-the-project">How to Run the Project</a></summary>
+      <ul>
+          <li><a href="#start-the-bulletin-board">Start the Bulletin Board</a></li>
+          <li><a href="#launch-the-admin">Launch the Admin</a></li>
+          <li><a href="#cast-votes">Cast Votes</a></li>
+          <li><a href="#run-a-mixer">Run a Mixer</a></li>
+          <li><a href="#run-a-verifier-optional-between-mixers">Run a Verifier</a></li>
+          <li><a href="#final-verification-optional">Final Verification</a></li>
+          <li><a href="#view-the-final-ballot">View the Final Ballot</a></li>
+      </ul>
+    </details>
+  </li>
+  <li><a href="#the-project-in-real-life">The Project in Real Life</a></li>
+</ol>
 
 
 ## Overview
@@ -58,6 +57,10 @@ Elgamal-Voting-Ballot/
 └── Group.py
 ```
 
+## An example for a run
+
+https://github.com/user-attachments/assets/77ba4e23-2581-4c6e-83c9-3b13a2cf81cf
+  
 ## How to Run the Project
 
 This guide walks you through the full voting process—from setup to final tally—using the ElGamal Voting Ballot system.
