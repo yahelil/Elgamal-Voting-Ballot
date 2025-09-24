@@ -2,13 +2,13 @@ import hashlib
 import random
 import socket
 import pickle
-
-from BulletinBoard import MAX_MIXES
 from Group import Group
 from Encryption import encrypt_vote
 
 HOST = 'localhost'
-PORT = 65434
+PORT = 65444
+MAX_MIXES = 5
+
 
 def add_mod_5(a, b):
     return (a + b) % 5

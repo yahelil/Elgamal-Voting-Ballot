@@ -2,7 +2,7 @@ import socket
 import pickle
 
 HOST = 'localhost'
-PORT = 65434
+PORT = 65444
 MAX_VOTES = 2
 MAX_MIXES = 5
 
@@ -45,6 +45,7 @@ try:
 
         # Starts mixing and verifying
         mixes.append((votes[0], votes[1]))
+        last_time = False
         print("Finished voting...")
         while True:
             try:
@@ -60,26 +61,33 @@ try:
                 response = pickle.loads(data) # the two votes mixed and the proof
 
                 if response[0] == "mixer": # if mixer connected appends the re-encrypted votes (with the proof)
-                    print(f"Mixer {len(mixes)} connected")
-                    mixes.append(response[1])
+                    if last_time:
+                        print("Mixing is over. Only verifying!")
+                        continue
+                    else:
+                        print(f"Mixer {len(mixes)} connected")
+                        mixes.append(response[1])
 
                 if response[0] == "very" and not response[1]: # if verifier
                     print(f"Verifier connected")
                     if not response[1]: # At least one mixer cheated
                         print("Beware a mixer cheated!!!")
                         # An option to remove all faulty re-encrypted votes from mixes
-                        if input("Want to overrule him? (y for yes, n for no)") == "y":
+                        if input("Want to overrule him? (y for yes, n for no) ") == "y":
                             tmp = []
                             for i in range(response[2]):
                                 tmp.append(mixes[i])
                             mixes = tmp
-
+                            if len(mixes) <= MAX_MIXES:
+                                last_time = False
             # if MAX_MIXES reached ask whether to verify more or not
             if len(mixes) >= MAX_MIXES + 1:
-                if input("Voting finished. Want to verify one last time? (y for yes, n for no)") == "n":
+                if input("Voting finished. Want to verify one last time? (y for yes, n for no)") == "n" or last_time:
                     # if not stop and send results to Admin
                     # else continues to accept another verifier
                     break
+                else:
+                    last_time = True
 
         votes = [mixes[-1][0], mixes[-1][1]] # the final re-encrypted votes
         admin_conn.sendall(pickle.dumps(votes))

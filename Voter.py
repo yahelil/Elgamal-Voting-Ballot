@@ -4,7 +4,7 @@ from Encryption import encrypt_vote
 from Group import Group
 
 HOST = 'localhost'
-PORT = 65434
+PORT = 65444
 
 def add_mod_5(a, b):
     return (a + b) % 5

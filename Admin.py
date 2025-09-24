@@ -5,7 +5,7 @@ import random
 from Encryption import decrypt_vote
 
 HOST = 'localhost'
-PORT = 65434
+PORT = 65444
 
 #Creating the cyclic group
 def add_mod_5(a, b):
@@ -52,7 +52,7 @@ for name, count in counters.items():
     if count > max_count:
         winner = name
         max_count = count
-    elif count == max_count:
+    elif count == max_count and winner is not None:
         winner = winner + ", " + name
     print(f"{name.capitalize()} votes: {count}")
 print(f"Winners are {winner}")
