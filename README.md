@@ -1,31 +1,30 @@
-# Elgamal-Voting-Ballot
+# ElGamal-Voting-Ballot
 
-https://github.com/user-attachments/assets/77ba4e23-2581-4c6e-83c9-3b13a2cf81cf
+
 
 <!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li><a href="#overview">Overview</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="#project-structure">Project Structure</a></li>
-    <li>
-      <details>
-        <summary><a href="#how-to-run-the-project">How to Run the Project</a></summary>
-        <ul>
-            <li><a href="#start-the-bulletin-board">Start the Bulletin Board</a></li>
-            <li><a href="#launch-the-admin">Launch the Admin</a></li>
-            <li><a href="#cast-votes">Cast Votes</a></li>
-            <li><a href="#run-a-mixer">Run a Mixer</a></li>
-            <li><a href="#run-a-verifier-optional-between-mixers">Run a Verifier</a></li>
-            <li><a href="#final-verification-optional">Final Verification</a></li>
-            <li><a href="#view-the-final-ballot">View the Final Ballot</a></li>
-        </ul>
-      </details>
-    </li>
-    <li><a href="#the-project-in-real-life ">The Project in Real Life </a></li>
-  </ol>
-</details>
+## Table Of Contents
+<ol>
+  <li><a href="#overview">Overview</a></li>
+  <li><a href="#about">About</a></li>
+  <li><a href="#project-structure">Project Structure</a></li>
+  <li><a href="#an-example-for-a-run">An example for a run</a></li>
+  <li>
+    <details>
+      <summary><a href="#how-to-run-the-project">How to Run the Project</a></summary>
+      <ul>
+          <li><a href="#start-the-bulletin-board">Start the Bulletin Board</a></li>
+          <li><a href="#launch-the-admin">Launch the Admin</a></li>
+          <li><a href="#cast-votes">Cast Votes</a></li>
+          <li><a href="#run-a-mixer">Run a Mixer</a></li>
+          <li><a href="#run-a-verifier-optional-between-mixers">Run a Verifier</a></li>
+          <li><a href="#final-verification-optional">Final Verification</a></li>
+          <li><a href="#view-the-final-ballot">View the Final Ballot</a></li>
+      </ul>
+    </details>
+  </li>
+  <li><a href="#the-project-in-real-life">The Project in Real Life</a></li>
+</ol>
 
 
 ## Overview
@@ -34,8 +33,8 @@ It aims to explore the intersection of cryptography and civic technology.\
 It’s designed to be simple enough to understand, yet powerful enough to showcase real-world cryptographic principles.
 
 ## About
-Elgamal Voting Ballot is a lightweight Python-based implementation of a secure voting system simulator using ElGamal encryption.\
-It demonstrates how cryptographic techniques can be applied to protect voter privacy, ensure vote integrity, and enable verifiable tallying. All without revealing individual choices.
+ElGamal Voting Ballot is a lightweight Python-based implementation of a secure voting system simulator using ElGamal encryption.\
+It demonstrates how cryptographic techniques can be applied to protect voter privacy, ensure vote integrity, and enable verifiable tallying all without revealing individual choices.
 
 ## Project Structure
 - Admin.py - Handles election setup, key distribution, and counting of the votes.
@@ -58,6 +57,10 @@ Elgamal-Voting-Ballot/
 └── Group.py
 ```
 
+## An example for a run
+
+https://github.com/user-attachments/assets/77ba4e23-2581-4c6e-83c9-3b13a2cf81cf
+  
 ## How to Run the Project
 
 This guide walks you through the full voting process—from setup to final tally—using the ElGamal Voting Ballot system.
