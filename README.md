@@ -1,4 +1,4 @@
-# Elgamal-Voting-Ballot
+# ElGamal-Voting-Ballot
 
 
 
@@ -33,8 +33,8 @@ It aims to explore the intersection of cryptography and civic technology.\
 It’s designed to be simple enough to understand, yet powerful enough to showcase real-world cryptographic principles.
 
 ## About
-Elgamal Voting Ballot is a lightweight Python-based implementation of a secure voting system simulator using ElGamal encryption.\
-It demonstrates how cryptographic techniques can be applied to protect voter privacy, ensure vote integrity, and enable verifiable tallying. All without revealing individual choices.
+ElGamal Voting Ballot is a lightweight Python-based implementation of a secure voting system simulator using ElGamal encryption.\
+It demonstrates how cryptographic techniques can be applied to protect voter privacy, ensure vote integrity, and enable verifiable tallying all without revealing individual choices.
 
 ## Project Structure
 - Admin.py - Handles election setup, key distribution, and counting of the votes.
