@@ -182,3 +182,10 @@ Winner is: [Name(s)]
 
 ## The Project in Real Life 
 
+In a real life ballot this 2x2 simulation will be used as a foundation for an nxn ballot.
+- First, the entity responsible for the ballot will start the BulletinBoard and a trusted entity will start admin.\
+*It's important to note that it would include more than one BulletinBoards (could be for different zones).
+- The voters will use Voter to connect to the BulletinBoard and vote.
+- After everyone voted, each party will mix the votes using an nxn version of Mixer and pass it to the next party.
+- Between each mix anyone can run their own verifier to make sure that the ballot is honest.
+- After every party is done mixing the admin will start counting the votes and announce the winner.
