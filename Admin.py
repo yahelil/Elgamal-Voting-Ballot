@@ -16,7 +16,7 @@ Group = Group(elements, add_mod_5)
 
 # Key generation
 g = Group.get_generator()
-private_key = random.randint(1, 100)
+private_key = random.randint(1, 10*10000)
 public_key = Group.pow(g, private_key)
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:

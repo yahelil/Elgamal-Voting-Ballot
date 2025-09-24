@@ -24,7 +24,7 @@ def int_to_string(n):
     return None
 
 def encrypt_vote(name, Group, public_key):
-    r = random.randint(1, 100)
+    r = random.randint(1, 10*10000)
     m = string_to_int(name)
     return Group.pow(Group.get_generator(), r), Group.operation(Group.pow(public_key,r), m)
 
