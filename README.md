@@ -195,5 +195,9 @@ In a real-life ballot, this 2x2 simulation will be used as a foundation for an n
 - After every party is done mixing, the admin will start counting the votes and announce the winner.
 
 ## Credit
-This project was done by: Yaheli Levit, Simon Levy, Eden Gulko, Guy Nevo, and Shira Abuddi.\
-We were very fortunate to have Ran Cohen, head of the "Spotlight on Research Course (Honors Program)", and Tal Moran, our advisor; We want to thank you both.
+This project was done by: Yaheli Levit, Simon Levy, Eden Sokolov Gulko, Guy Nevo, and Shira Abuddi.\
+We were very fortunate to have:
+- Ran Cohen, head of the "Spotlight on Research Course (Honors Program)"
+- Tal Moran, our advisor
+  
+We want to thank you both.
