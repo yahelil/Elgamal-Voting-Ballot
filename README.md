@@ -39,6 +39,10 @@ This project presents a secure and verifiable electronic ballot system, built in
 2. Install dependencies if required (see any requirements.txt or project docs).
 3. Run modules according to election workflow. (See example admin, voting, and verification scripts in the repo.)
 
+## Demonstration
+
+https://github.com/user-attachments/assets/cefa687d-b42e-4ef9-b8e9-de0a4f131c3f
+
 
 
 ## Contributors
